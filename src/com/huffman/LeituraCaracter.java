@@ -1,3 +1,4 @@
+package com.huffman;
 
 import java.io.*;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class LeituraCaracter extends Leitura {
                     frequencias.replace(ch, value + 1);
                 }
             }
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

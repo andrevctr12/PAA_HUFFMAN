@@ -1,6 +1,8 @@
+package com.huffman;
+
 import java.io.*;
 import java.util.HashMap;
-import java.util.StringTokenizer;
+
 
 /**
  * @author André Victor
@@ -28,6 +30,7 @@ public class LeituraPalavra extends Leitura {
                     }
                 }
             }
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

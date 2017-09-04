@@ -1,3 +1,5 @@
+package com.huffman;
+
 import java.io.File;
 import java.util.HashMap;
 
