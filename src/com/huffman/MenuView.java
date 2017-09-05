@@ -49,10 +49,12 @@ public class MenuView extends JFrame {
             chooser.setDialogTitle("Escolha o arquivo");
             if (chooser.showOpenDialog(this) == JFileChooser.OPEN_DIALOG) {
                 File fileSelected = chooser.getSelectedFile();
-                HashMap hashMap = new LeituraCaracter().extraiFrequenciaArquivo(fileSelected);
+                LeituraCaracter leituraCaracter = new LeituraCaracter(fileSelected);
+                HashMap hashMap = leituraCaracter.extraiFrequenciaArquivo();
                 HuffmanTree tree = buildTree(hashMap);
-                System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
-                printCodes(tree, new Stack<Character>());
+//                System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
+//                printCodes(tree, new Stack<Character>());
+                leituraCaracter.codificarArquivo("algumacoisa.bin", tree);
 
             }
 
@@ -69,7 +71,7 @@ public class MenuView extends JFrame {
             chooser.setDialogTitle("Escolha o arquivo");
             if (chooser.showOpenDialog(this) == JFileChooser.OPEN_DIALOG) {
                 File fileSelected = chooser.getSelectedFile();
-                HashMap hashMap = new LeituraPalavra().extraiFrequenciaArquivo(fileSelected);
+                HashMap hashMap = new LeituraPalavra(fileSelected).extraiFrequenciaArquivo();
                 HuffmanTree tree = buildTree(hashMap);
                 System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
                 printCodes(tree, new Stack<Character>());

@@ -11,13 +11,14 @@ import java.util.HashMap;
 public class LeituraPalavra extends Leitura {
     String linha;
 
-    public LeituraPalavra() {
+    public LeituraPalavra(File fileIn) {
         frequencias = new HashMap<String, Integer>();
+        this.fileIn = fileIn;
     }
     @Override
-    public HashMap extraiFrequenciaArquivo(File arquivo) {
+    public HashMap extraiFrequenciaArquivo() {
         try{
-            BufferedReader reader = new BufferedReader(new FileReader(arquivo));
+            BufferedReader reader = new BufferedReader(new FileReader(fileIn));
             linha = reader.readLine();
             int value = 1;
             while ((linha = reader.readLine()) != null) {

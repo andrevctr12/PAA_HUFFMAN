@@ -5,6 +5,7 @@ import org.omg.CORBA.INTERNAL;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Stack;
@@ -54,5 +55,4 @@ public class HuffmanCode {
             prefix.pop();
         }
     }
-
 }
