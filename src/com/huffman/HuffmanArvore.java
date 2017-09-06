@@ -4,7 +4,11 @@ package com.huffman;
  * @author André Victor
  * @author Khadije El Zein
  */
-public abstract class HuffmanTree implements Comparable<HuffmanTree> {
+
+/**
+ * Metodo que cria a arvore de prefixos
+ */
+public abstract class HuffmanArvore implements Comparable<HuffmanArvore> {
     public int frequencia;
     private int altura;
 
@@ -18,16 +22,16 @@ public abstract class HuffmanTree implements Comparable<HuffmanTree> {
 
 
 
-    public HuffmanTree(int freq) {
+    public HuffmanArvore(int freq) {
         frequencia = freq;
     }
-    public int compareTo(HuffmanTree tree) {
+    public int compareTo(HuffmanArvore tree) {
         return frequencia - tree.frequencia;
     }
-    public static int calcularAltura(HuffmanTree tree) {
+    public static int calcularAltura(HuffmanArvore tree) {
         assert tree != null;
-        if (tree instanceof HuffmanNode) {
-            HuffmanNode node = (HuffmanNode) tree;
+        if (tree instanceof HuffmanNodo) {
+            HuffmanNodo node = (HuffmanNodo) tree;
             int he = calcularAltura(node.left);
             int hd = calcularAltura(node.right);
             if (he < hd) return hd + 1;
@@ -35,13 +39,13 @@ public abstract class HuffmanTree implements Comparable<HuffmanTree> {
         }
         return 0;
     }
-    public String printCodes(HuffmanTree tree, String string) {
+    public String printCodes(HuffmanArvore tree, String string) {
         assert tree != null;
-        if (tree instanceof HuffmanLeaf) {
-            HuffmanLeaf leaf = (HuffmanLeaf)tree;
+        if (tree instanceof HuffmanFolha) {
+            HuffmanFolha leaf = (HuffmanFolha)tree;
             return leaf.value;
-        } else if (tree instanceof HuffmanNode) {
-            HuffmanNode node = (HuffmanNode)tree;
+        } else if (tree instanceof HuffmanNodo) {
+            HuffmanNodo node = (HuffmanNodo)tree;
             if (string.substring(altura, altura + 1).equals("0")) {
                 altura++;
                 return this.printCodes(node.left, string);

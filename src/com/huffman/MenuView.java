@@ -15,6 +15,10 @@ import static com.huffman.Leitura.printCode;
  * @author André Victor
  * @author Khadije El Zein
  */
+
+/**
+ * Classe de View para o menu
+ */
 public class MenuView extends JFrame {
     private JPanel mainPanel;
     private JButton codificarArquivoPorCaracterButton;
@@ -22,6 +26,9 @@ public class MenuView extends JFrame {
     private JButton decodificarArquivoPorCaracterButton;
     private JButton decodificarArquivoPorPalavraButton;
 
+    /**
+     * Metodo construtor de Menu
+     */
     public MenuView() {
         setTitle("MENUZINHU");
         setContentPane(mainPanel);
@@ -57,6 +64,10 @@ public class MenuView extends JFrame {
         });
     }
 
+    /**
+     * Metodo para evento de botão
+     * @param evt evento
+     */
     private void codificarArquivoPorCaracterButtonActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -66,7 +77,9 @@ public class MenuView extends JFrame {
                 File fileSelected = chooser.getSelectedFile();
                 LeituraCaracter leituraCaracter = new LeituraCaracter(fileSelected);
                 HashMap hashMapFreq = leituraCaracter.extraiFrequenciaArquivo();
-                leituraCaracter.codificarArquivo("algumacoisa.bin");
+                String arquivosaida = fileSelected + "Char.bin";
+                arquivosaida = arquivosaida.replace(".txt", "");
+                leituraCaracter.codificarArquivo(arquivosaida);
 
             }
 
@@ -75,7 +88,10 @@ public class MenuView extends JFrame {
         }
 
     }
-
+    /**
+     * Metodo para evento de botão
+     * @param evt evento
+     */
     private void codificarArquivoPorPalavraButtonActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -85,7 +101,9 @@ public class MenuView extends JFrame {
                 File fileSelected = chooser.getSelectedFile();
                 LeituraPalavra leituraPalavra = new LeituraPalavra(fileSelected);
                 HashMap hashMap = leituraPalavra.extraiFrequenciaArquivo();
-                leituraPalavra.codificarArquivo("algumacoisaPalavra.bin");
+                String arquivosaida = fileSelected + "Pal.bin";
+                arquivosaida = arquivosaida.replace(".txt", "");
+                leituraPalavra.codificarArquivo(arquivosaida);
 
             }
 
@@ -94,7 +112,10 @@ public class MenuView extends JFrame {
         }
 
     }
-
+    /**
+     * Metodo para evento de botão
+     * @param evt evento
+     */
     private void decodificarArquivoPorCaracterButtonActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -112,7 +133,10 @@ public class MenuView extends JFrame {
         }
 
     }
-
+    /**
+     * Metodo para evento de botão
+     * @param evt evento
+     */
     private void decodificarArquivoPorPalavraButtonActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -130,6 +154,10 @@ public class MenuView extends JFrame {
         }
     }
 
+    /**
+     * Main
+     * @param args
+     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {

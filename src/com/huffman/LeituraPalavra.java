@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import static com.huffman.HuffmanCode.buildTree;
-import static com.huffman.HuffmanTree.calcularAltura;
+import static com.huffman.HuffmanArvore.calcularAltura;
 
 
 /**
@@ -19,13 +19,17 @@ public class LeituraPalavra extends Leitura {
         frequencias = new HashMap<String, Integer>();
         this.fileIn = fileIn;
     }
+
+    /**
+     * Implementação do Método abstrato
+     * @return Mapa de frenquencias
+     */
     @Override
     public HashMap extraiFrequenciaArquivo() {
         try{
             BufferedReader reader = new BufferedReader(new FileReader(fileIn));
-            int value = 1;
-            int value_linha = 0;
-            frequencias.put("\n", value_linha);
+            int value;
+            frequencias.put("\n", 0);
             while ((linha = reader.readLine()) != null) {
                 for(String str : linha.split("(?!^)\\b")) {
                     if (!frequencias.containsKey(str)) {
@@ -35,7 +39,8 @@ public class LeituraPalavra extends Leitura {
                         frequencias.replace(str, value + 1);
                     }
                 }
-                frequencias.replace("\n", value_linha++);
+                value = (int) frequencias.get("\n");
+                frequencias.replace("\n", value + 1);
             }
             reader.close();
         } catch (IOException e) {
@@ -44,9 +49,14 @@ public class LeituraPalavra extends Leitura {
         return frequencias;
     }
 
+    /**
+     * Implementação do metodo abstrato
+     * @param fileOut arquivo de saida
+     */
+    @Override
     public void codificarArquivo(String fileOut) {
         try{
-            HuffmanTree tree = buildTree(frequencias);
+            HuffmanArvore tree = buildTree(frequencias);
             BufferedReader reader = new BufferedReader(new FileReader(fileIn));
             FileOutputStream out = new FileOutputStream(fileOut);
             this.createTableHuffman(tree, new Stack<Character>());
@@ -57,24 +67,20 @@ public class LeituraPalavra extends Leitura {
             while ((linha = reader.readLine()) != null) {
                 for(String palavra : linha.split("(?!^)\\b")) {
                     str += huff.get(palavra);
-                    if (str.length() >= 8) {
-                        for (int i = 0; i < str.length()/8; i++) {
+                        while(str.length() >= 8) {
                             String splitted = str.substring(0,8);
                             if (splitted.length() == 8) {
                                 out.write((byte) Integer.parseInt(splitted, 2));
                                 str = str.replace(splitted, "");
                             }
                         }
-                    }
                 }
                 str += huff.get("\n");
-                if (str.length() >= 8) {
-                    for (int i = 0; i < str.length()/8; i++) {
-                        String splitted = str.substring(0,8);
-                        if (splitted.length() == 8) {
-                            out.write((byte) Integer.parseInt(splitted, 2));
-                            str = str.replace(splitted, "");
-                        }
+                while(str.length() >= 8) {
+                    String splitted = str.substring(0,8);
+                    if (splitted.length() == 8) {
+                        out.write((byte) Integer.parseInt(splitted, 2));
+                        str = str.replace(splitted, "");
                     }
                 }
             }
@@ -99,50 +105,5 @@ public class LeituraPalavra extends Leitura {
         }
     }
 
-//    public void decodificarArquivo() {
-//        try {
-//            BufferedInputStream reader = new BufferedInputStream(new FileInputStream(fileIn));
-//            Cabecalho cabecalho = new Cabecalho();
-//            cabecalho = cabecalho.lerCabecalho(reader);
-//            frequencias = cabecalho.getHashMap();
-//            HuffmanTree tree = buildTree(frequencias);
-//            String fileOut;
-//            fileOut = fileIn + "Decoded.txt";
-//            fileOut = fileOut.replace(".bin", "");
-//            FileWriter filewriter = new FileWriter(fileOut);
-//            PrintWriter writer = new PrintWriter(filewriter);
-//            writer.flush();
-//            int r = -1;
-//            String str = new String();
-//            do {
-//                if (str.length() < cabecalho.getAltura()) {
-//                    r = (int)reader.read();
-//                    if (r != -1) {
-//                        byte r2 = (byte) r;
-//                        String bytes = String.format("%8s", Integer.toBinaryString(r2 & 0xFF)).replace(' ', '0');
-//                        str += bytes;
-//                    }
-//                    else if (str.length() > 0){
-//                        str = str.replace(str.substring(7 - cabecalho.getLixo(), 8), "");
-//                        tree.setAltura(0);
-//                        writer.print(tree.printCodes(tree,str));
-//                    }
-//
-//                }
-//                else {
-//                    tree.setAltura(0);
-//                    writer.print(tree.printCodes(tree, str));
-//                    str = str.replaceFirst(str.substring(0, tree.getAltura()), "");
-//                }
-//            } while (r != -1);
-//            filewriter.close();
-//            reader.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
 }

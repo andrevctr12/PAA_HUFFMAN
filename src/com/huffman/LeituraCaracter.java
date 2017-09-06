@@ -2,11 +2,10 @@ package com.huffman;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 import static com.huffman.HuffmanCode.buildTree;
-import static com.huffman.HuffmanTree.calcularAltura;
+import static com.huffman.HuffmanArvore.calcularAltura;
 
 
 /**
@@ -18,6 +17,11 @@ public class LeituraCaracter extends Leitura {
         frequencias = new HashMap<Character, Integer>();
         this.fileIn = fileIn;
     }
+
+    /**
+     * Implementação do Método abstrato
+     * @return Mapa de frenquencias
+     */
     @Override
     public HashMap extraiFrequenciaArquivo() {
         try{
@@ -39,10 +43,14 @@ public class LeituraCaracter extends Leitura {
         }
         return frequencias;
     }
-
+    /**
+     * Implementação do metodo abstrato
+     * @param fileOut arquivo de saida
+     */
+    @Override
     public void codificarArquivo(String fileOut) {
         try{
-            HuffmanTree tree = buildTree(frequencias);
+            HuffmanArvore tree = buildTree(frequencias);
             BufferedReader reader = new BufferedReader(new FileReader(fileIn));
             FileOutputStream out = new FileOutputStream(fileOut);
             this.createTableHuffman(tree, new Stack<Character>());

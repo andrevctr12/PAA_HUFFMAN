@@ -5,35 +5,53 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import static com.huffman.HuffmanCode.buildTree;
-import static com.huffman.HuffmanTree.calcularAltura;
 
 /**
  * @author André Victor
  * @author Khadije El Zein
+ */
+
+/**
+ * Classe abstrata de Leitura
  */
 public abstract class Leitura {
     protected HashMap frequencias;
     protected File fileIn;
     protected HashMap<String, String> huff = new HashMap<String, String>();
 
+    /**
+     * Metodo Abstrato que extrai frequencias do arquivo texto
+     * @return retorna mapa de frequencias
+     */
     abstract public HashMap extraiFrequenciaArquivo();
+
+    /**
+     * Metodo abstrato de codificação de arquivo
+     * @param fileOut nome do arquivo de saida
+     */
+    abstract public void codificarArquivo(String fileOut);
 
     public HashMap getFrequencias() {
         return frequencias;
     }
 
-    public void createTableHuffman(HuffmanTree tree, Stack<Character> prefix) {
+    /**
+     * Cria a tabela com os prefixos de huffman
+     * @param tree arvore de prefixos
+     * @param prefix pilha de prefixos
+     */
+    public void createTableHuffman(HuffmanArvore tree, Stack<Character> prefix) {
         assert tree != null;
-        if (tree instanceof HuffmanLeaf) {
-            HuffmanLeaf leaf = (HuffmanLeaf) tree;
+        if (tree instanceof HuffmanFolha) {
+            HuffmanFolha leaf = (HuffmanFolha) tree;
             String str = new String();
             for (char bit : prefix) {
                 str += bit;
             }
             huff.put(leaf.value.toString(), str);
 
-        } else if (tree instanceof HuffmanNode) {
-            HuffmanNode node = (HuffmanNode) tree;
+        } else if (tree instanceof HuffmanNodo) {
+            HuffmanNodo node = (HuffmanNodo) tree;
             prefix.push('0');
             createTableHuffman(node.left,prefix);
             prefix.pop();
@@ -43,18 +61,23 @@ public abstract class Leitura {
         }
     }
 
-    public static void printCode(HuffmanTree tree, Stack<Character> prefix) {
+    /**
+     * Imprime os codigos
+     * @param tree
+     * @param prefix
+     */
+    public static void printCode(HuffmanArvore tree, Stack<Character> prefix) {
         assert tree != null;
-        if (tree instanceof HuffmanLeaf) {
-            HuffmanLeaf leaf = (HuffmanLeaf)tree;
+        if (tree instanceof HuffmanFolha) {
+            HuffmanFolha leaf = (HuffmanFolha)tree;
             // print out character and frequency
             System.out.print(leaf.value + "\t" + leaf.frequencia + "\t");
             // print out code for this leaf, which is just the prefix
             for (char bit : prefix)
                 System.out.print(bit);
             System.out.println();
-        } else if (tree instanceof HuffmanNode) {
-            HuffmanNode node = (HuffmanNode)tree;
+        } else if (tree instanceof HuffmanNodo) {
+            HuffmanNodo node = (HuffmanNodo)tree;
             // traverse left
             prefix.push('0');
             printCode(node.left, prefix);
@@ -66,13 +89,16 @@ public abstract class Leitura {
         }
     }
 
+    /**
+     * Metodo Para decodificar um arquivo codificado, tanto com palavra, quanto com character
+     */
     public void decodificarArquivo() {
         try {
             BufferedInputStream reader = new BufferedInputStream(new FileInputStream(fileIn));
             Cabecalho cabecalho = new Cabecalho();
             cabecalho = cabecalho.lerCabecalho(reader);
             frequencias = cabecalho.getHashMap();
-            HuffmanTree tree = buildTree(frequencias);
+            HuffmanArvore tree = buildTree(frequencias);
             String fileOut;
             fileOut = fileIn + "Decoded.txt";
             fileOut = fileOut.replace(".bin", "");
