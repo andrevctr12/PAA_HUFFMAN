@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import static com.huffman.HuffmanCode.buildTree;
-import static com.huffman.HuffmanCode.printCodes;
+import static com.huffman.Leitura.printCode;
 
 /**
  * @author André Victor
@@ -29,8 +29,9 @@ public class MenuView extends JFrame {
         pack();
 
         codificarArquivoPorCaracterButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                codificarArquivoPorCaracterButtonActionPerformed(evt);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                codificarArquivoPorCaracterButtonActionPerformed(e);
             }
         });
 
@@ -38,6 +39,20 @@ public class MenuView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 codificarArquivoPorPalavraButtonActionPerformed(e);
+            }
+        });
+
+        decodificarArquivoPorCaracterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                decodificarArquivoPorCaracterButtonActionPerformed(e);
+            }
+        });
+
+        decodificarArquivoPorPalavraButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                decodificarArquivoPorPalavraButtonActionPerformed(e);
             }
         });
     }
@@ -50,11 +65,8 @@ public class MenuView extends JFrame {
             if (chooser.showOpenDialog(this) == JFileChooser.OPEN_DIALOG) {
                 File fileSelected = chooser.getSelectedFile();
                 LeituraCaracter leituraCaracter = new LeituraCaracter(fileSelected);
-                HashMap hashMap = leituraCaracter.extraiFrequenciaArquivo();
-                HuffmanTree tree = buildTree(hashMap);
-//                System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
-//                printCodes(tree, new Stack<Character>());
-                leituraCaracter.codificarArquivo("algumacoisa.bin", tree);
+                HashMap hashMapFreq = leituraCaracter.extraiFrequenciaArquivo();
+                leituraCaracter.codificarArquivo("algumacoisa.bin");
 
             }
 
@@ -71,10 +83,9 @@ public class MenuView extends JFrame {
             chooser.setDialogTitle("Escolha o arquivo");
             if (chooser.showOpenDialog(this) == JFileChooser.OPEN_DIALOG) {
                 File fileSelected = chooser.getSelectedFile();
-                HashMap hashMap = new LeituraPalavra(fileSelected).extraiFrequenciaArquivo();
-                HuffmanTree tree = buildTree(hashMap);
-                System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
-                printCodes(tree, new Stack<Character>());
+                LeituraPalavra leituraPalavra = new LeituraPalavra(fileSelected);
+                HashMap hashMap = leituraPalavra.extraiFrequenciaArquivo();
+                leituraPalavra.codificarArquivo("algumacoisaPalavra.bin");
 
             }
 
@@ -82,6 +93,41 @@ public class MenuView extends JFrame {
             e.printStackTrace();
         }
 
+    }
+
+    private void decodificarArquivoPorCaracterButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setDialogTitle("Escolha o arquivo");
+            if (chooser.showOpenDialog(this) == JFileChooser.OPEN_DIALOG) {
+                File fileSelected = chooser.getSelectedFile();
+                LeituraCaracter leituraCaracter = new LeituraCaracter(fileSelected);
+                leituraCaracter.decodificarArquivo();
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void decodificarArquivoPorPalavraButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setDialogTitle("Escolha o arquivo");
+            if (chooser.showOpenDialog(this) == JFileChooser.OPEN_DIALOG) {
+                File fileSelected = chooser.getSelectedFile();
+                LeituraPalavra leituraPalavra = new LeituraPalavra(fileSelected);
+                leituraPalavra.decodificarArquivo();
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

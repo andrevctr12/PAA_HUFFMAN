@@ -33,26 +33,5 @@ public class HuffmanCode {
         }
         return trees.poll();
     }
-    public static void printCodes(HuffmanTree tree, Stack<Character> prefix) {
-        assert tree != null;
-        if (tree instanceof HuffmanLeaf) {
-            HuffmanLeaf leaf = (HuffmanLeaf)tree;
-            // print out character and frequency
-            System.out.print(leaf.value + "\t" + leaf.frequencia + "\t");
-            // print out code for this leaf, which is just the prefix
-            for (char bit : prefix)
-                System.out.print(bit);
-            System.out.println();
-        } else if (tree instanceof HuffmanNode) {
-            HuffmanNode node = (HuffmanNode)tree;
-            // traverse left
-            prefix.push('0');
-            printCodes(node.left, prefix);
-            prefix.pop();
-            // traverse right
-            prefix.push('1');
-            printCodes(node.right, prefix);
-            prefix.pop();
-        }
-    }
+
 }
